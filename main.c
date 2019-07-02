@@ -13,6 +13,15 @@
 #include "fractol.h"
 
 
+//	zn+1 = z*z + c do this about 50 times for each point/pixel on coordinate system, 
+
+
+
+int		main(int ac, char **av)
+{
+	//stuff
+	return (0);
+}
 
 
 
