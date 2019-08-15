@@ -36,56 +36,80 @@ typedef struct	s_frol_type
 
 typedef	struct	s_ol
 {
-	char		*name;
-	int			type;
-	void		*win_ptr;
-	void		*img_ptr;
-	int			*img_data;
-	int			win_width;
-	int			win_height;
-	int			last_pix;
-	int			syst_origin;
-	double		start_x;
-	double		start_y;	//these depend on scale ???? i think so...
-	double		scale;
-	int			zoom_scale_thing;
+	struct s_fract	*mlx;
+
+//	void			*all_ptr;
+	char			*name;
+	int				type;
+	int				number;
+	void			*win_ptr;
+	void			*img_ptr;
+	int				*img_data;
+	int				win_width;
+	int				win_height;
+	int				last_pix;
+	int				win_origin;
+	double			z_fact;		//zoom factor
+//	double			og_st_x;//og left cord
+//	double			og_st_y;
+	double			st_x; // current left cord
+	double			st_y;
+	double			x_o;// cord of mid wind, origin
+	double			y_o;
+	double			wid_scale;	//size of syst
+	double			hei_scale;
+	double			scale;	// pixel to syst
+	int				zoom;
+	int				max_iter;
+	int				disp_info;
+
+	// mouse stuff:
+	int				m_pressed;	// is or not
+	int				m_x;		// new mouse coord
+	int				m_y;
+	int				m_st_x;		// prev mouse coord
+	int				m_st_y;		// useful ?????
+
+//	t_compn			*o;	// coord of mid of wind
 }				t_ol;
 
 typedef struct	s_fract
 {
 	void	*ptr;
-	t_ol	*tab;	// make this a table but later maybe a ll 
+	t_ol	*tab;	// linked list instead???
 	int		n_frols;
-//	int		win_width;
-//	int		win_height;
-//	int		last_pix;
-//	void	*img_ptr;
-//	int		*img_data;
 	int		bpp;
 	int		s_l;
 	int		endian;
-//	int		syst_origin;
-
-
-
-	int		max_iter;
-
-
-
 }				t_fract;
 
 typedef struct	s_key
 {
 	int		keycode;
-	int		(*f)(t_fract *mlx);
+	int		(*f)(t_ol *tab);
 }				t_key;
 
 void	ft_fractal(t_list *files);
-int		ft_initfractal(t_fract *mlx, t_ol *tab, t_list *files);
+int		ft_initfractal(t_fract *mlx, t_ol *tab);
 int		ft_redraw(t_fract *mlx, int i);
 void	ft_hooks_loop(t_fract *mlx, int i);
 void	ft_draw(t_fract *mlx, int i);
-int		ft_quitfract(t_fract *mlx);
+int		ft_quitfract(t_ol *tab);
+int		ft_quitone(t_ol *tab);
 
+int		ft_zoom_in(int x, int y, t_ol *tab);
+int		ft_zoom_out(int x, int y, t_ol *tab);
+int		ft_resetfract(t_ol *tab);
+int		ft_display_info(t_ol *tab);
+int		ft_more_precise(t_ol *tab);
+int		ft_less_precise(t_ol *tab);
+
+int		ft_pan_right(t_ol *tab);
+int		ft_pan_left(t_ol *tab);
+int		ft_pan_up(t_ol *tab);
+int		ft_pan_down(t_ol *tab);
+int		ft_mouse_press(int n, int x, int y, t_ol *tab);
+int		ft_mouse_release(int n, int x, int y, t_ol *tab);
+int		ft_mouse_move(int x, int y, t_ol *tab);
 
 #endif

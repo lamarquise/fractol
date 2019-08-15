@@ -13,10 +13,14 @@
 NAME = fractol
 
 SRC_PATH = src/
-SRC_NAME =	ft_draw.c			\
-			ft_keyhook.c		\
-			ft_fractal.c		\
-			ft_initfractal.c	\
+SRC_NAME =	draw.c			\
+			keyhook.c		\
+			fractal.c		\
+			initfractal.c	\
+			zoom.c			\
+			tools.c			\
+			move.c			\
+			mouse.c			\
 			main.c
 
 SRC = $(addprefix $(SRC_PATH),$(SRC_NAME))
@@ -25,12 +29,9 @@ OBJ_PATH = obj/
 OBJ_NAME = $(SRC_NAME:.c=.o)
 OBJ = $(addprefix $(OBJ_PATH),$(OBJ_NAME))
 
-INC = -Iinclude
-INCMLX = -I/usr/local/include
-
 INC = -I include -I /usr/local/include
 HEADER = include/fractol.h
-LIB_PATH = -L libft -L /usr/local/lib -L ./
+LIB_PATH = -L libft -L /usr/local/lib
 LIB = -lft -lmlx -lm
 FW = -framework OpenGL -framework AppKit
 

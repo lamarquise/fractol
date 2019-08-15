@@ -1,0 +1,16 @@
+
+
+Ok so the way things work now:
+
+t_img named mlx contains all info for making the window, a pointer to t_cord named dim 
+which contains input size of boxes and # of boxes, a pointer to t_mag named img
+which contains img ptr and # of pix of img and pointer to t_car named tab, which
+contains a table with x y coord of start of all boxes to be made
+
+seems like t_car table is only useful for production of first img, then not so useful,
+move it? I think so
+
+what is int *tab for ???
+tab does what car does ...
+tab used in draw, contains the pixel number for start of each box
+car not that usefull... i think

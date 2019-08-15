@@ -56,7 +56,7 @@ void	ft_inp_n_fill(char *str, t_list **files)	// better if not void?
 	}
 //	printf("new cont size: %zu\n", new->content_size);
 	ft_lstappend(files, new);
-	ft_lstprint(*files);
+//	ft_lstprint(*files);
 //	return (files);
 }
 
