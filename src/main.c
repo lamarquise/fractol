@@ -6,7 +6,7 @@
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/30 16:30:31 by erlazo            #+#    #+#             */
-/*   Updated: 2019/07/04 19:09:04 by erlazo           ###   ########.fr       */
+/*   Updated: 2019/08/15 17:31:21 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int		ft_find(char *str, char **tab)				// add to lib???
 
 void	ft_inp_n_fill(char *str, t_list **files)	// better if not void?
 {
-	static char *tab[] = {"none", "mendelbrot", "julia"};
+	static char *tab[] = {"none", "mandelbrot", "julia"};
 	t_list		*new;
 	int			i;
 
@@ -51,13 +51,13 @@ void	ft_inp_n_fill(char *str, t_list **files)	// better if not void?
 	if ((/*i = ft_find(str, tab)*/ i == -1) || !(new = ft_lstcreate((void*)str, i)))
 	{
 		ft_lstdel(files, &ft_lstdel_cnt);
-		ft_usage("usage: fractol <name>\nNames:\nmendlebrot\njulia\n");
-		return ;//(NULL);
+		ft_usage("usage: fractol <name>\nNames:\nmandelbrot\njulia\n");
+		exit(0);
 	}
 //	printf("new cont size: %zu\n", new->content_size);
 	ft_lstappend(files, new);
 //	ft_lstprint(*files);
-//	return (files);
+//	return (0);
 }
 
 int		main(int ac, char **av)

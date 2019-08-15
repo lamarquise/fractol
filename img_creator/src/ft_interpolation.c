@@ -23,9 +23,8 @@ void	start_car(t_mag *img, t_car *cord)
 }
 
 
-// do i put all the info in a new struct type or keep it in mlx, or leave in func???
 
-int		lin_interpol(int c1, int c2, float perc)	// standard perc, always left...
+int		lin_interpol(int c1, int c2, double perc)	// standard perc, always left...
 {
 	int		red;
 	int		green;
@@ -49,10 +48,8 @@ int		lin_interpol(int c1, int c2, float perc)	// standard perc, always left...
 	return (red * 65536 + green * 256 + blue);
 }
 
-	// or do while for all pixels here ....
-	// calls lin_inter 3 times... ca    lled for each point...
 int		bilin_interpol(t_mag *og, t_mag *new, int cord)
-{		// how to handle edge cases ????
+{
 	int		color;
 	int		tmp;
 	t_car	point;
@@ -80,6 +77,27 @@ int		bilin_interpol(t_mag *og, t_mag *new, int cord)
 	return (color);
 }
 
+int		bilin_interpol(t_mag *og, int pix_start, double perc_x, double perc_y)
+{
+	int		color;
+
+	if ((pix_start + 1) % og->x == 1)	// case B or D
+	{
+		if ((pix_start + og->x * 2) / og->x > og->y)	// case D
+
+			color = og->img_data[pix_start];
+		else			// case B
+			color = lin_interpol(og->img_data[pix_start], og->img_data[pix_start + og->x], perc_y);
+	}
+	else if (((pix_start + og->x * 2) / og->x > og->y)	// case C
+		color = lin_interpol(og->img_data[pix_start], og->img_data[pix_start + 1], perc_x);
+
+	// case A
+	color = lin_interpol(lin_interpol(og->img_data[pix_start], og->img_data[pix_start + 1], perc_x),\
+			lin_interpol(og->img_data[pix_start + og->x], og->img_data[pix_start + og->x + 1], perc_x), perc_y);
+
+	return (color);
+}
 
 // return an img ???
 void	ft_altdraw(t_img *mlx)		// send new img dimentions ???
@@ -110,6 +128,23 @@ void	ft_altdraw(t_img *mlx)		// send new img dimentions ???
 	i = 0;
 	while (i < tmp.x * tmp.y)
 	{
+
+		// better, send old img, pos in img, ratios x and y, return color, top left pixel
+
+		// x in new_img = i % tmp.x;
+		// y in new_img = i / tmp.x;
+
+		// mlx->img->x / tmp.x * x in new img = new x in old 
+		// mlx->img->y / tmp.y * y in new img = new y in old
+		
+		// floor(new x in old - 0.5) + floor(new y in old - 0.5) * mlx->img->x;	== top left pix in old
+
+		// percentage x = floor(new x in old - 0.5)
+		// percentage y = floor(new y in old - 0.5)
+
+		//new one:
+		tmp.img_data[i] = bilin_interpol(mlx->img, top_left, perc x, perc y);
+
 		tmp.img_data[i] = bilin_interpol(mlx->img, &tmp, i);
 		++i;
 	}

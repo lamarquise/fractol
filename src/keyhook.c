@@ -6,7 +6,7 @@
 /*   By: tlamart <erlazo@student.42.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/05 17:58:28 by erlazo            #+#    #+#             */
-/*   Updated: 2019/07/05 08:45:46 by erlazo           ###   ########.fr       */
+/*   Updated: 2019/08/15 17:53:52 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,24 @@ int		ft_redraw(t_fract *mlx, int i)
 	mlx_put_image_to_window(mlx->ptr, mlx->tab[i].win_ptr, mlx->tab[i].img_ptr, 0, 0);
 	if (mlx->tab[i].disp_info == 1)
 	{
+		str = ft_strjoin("Precition:", ft_itoa(mlx->tab[i].max_iter));
+		str = ft_strjoin(str, " Zoom:");
+		str = ft_strjoin(str, ft_itoa(mlx->tab[i].zoom));
+		str = ft_strjoin(str, " X:");
+		str = ft_strjoin(str, ft_itoa(mlx->tab[i].x_o));
+		str = ft_strjoin(str, " Y:");
+		str = ft_strjoin(str, ft_itoa(mlx->tab[i].y_o));
+		mlx_string_put(mlx->ptr, mlx->tab[i].win_ptr, 0, 0, 0xFFFFFF, str);
+
+
+/*
 		str = ft_strjoin(ft_strjoin(ft_strjoin("precition:",\
 		ft_itoa(mlx->tab[i].max_iter)), ft_strjoin(" zoom:",\
 		ft_itoa(mlx->tab[i].zoom))), ft_strjoin(ft_strjoin(" x:",\
 		ft_itoa(mlx->tab[i].x_o)), ft_strjoin(" y:",\
 		ft_itoa(mlx->tab[i].y_o))));
 		mlx_string_put(mlx->ptr, mlx->tab[i].win_ptr, 0, 0, 0xFFFFFF, str);
-	}
+*/	}
 	return (0);
 }
 
