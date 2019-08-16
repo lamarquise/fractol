@@ -27,7 +27,7 @@ typedef struct	s_cord
 	int		y_b;
 	int		b_wid;		// width of box
 	int		b_hei;
-	t_car	*tab;		// table of cartesian coords??
+//	t_car	*tab;		// table of cartesian coords??
 }				t_cord;
 
 		// necessary ???
@@ -39,7 +39,7 @@ typedef struct	s_mag
 	int		x;			// #pixels wide
 	int		y;			// of img
 	int		last;
-	t_car	*tab;
+//	t_car	*tab;
 	
 }				t_mag;
 

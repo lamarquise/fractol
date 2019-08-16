@@ -4,6 +4,8 @@
 
 #include "img.h"
 
+	// fairly certain this shit is useless or redundant or both
+/*
 void	start_car(t_mag *img, t_car *cord)
 {
 	int		i;
@@ -21,8 +23,9 @@ void	start_car(t_mag *img, t_car *cord)
 	}
 	img->tab = cord;
 }
+*/
 
-
+	// seems good but need to test
 
 int		lin_interpol(int c1, int c2, double perc)	// standard perc, always left...
 {
@@ -45,9 +48,13 @@ int		lin_interpol(int c1, int c2, double perc)	// standard perc, always left...
 	green = (1 - perc) * ((c1 / 256) % 256) + perc * ((c2 / 256) % 256);
 	blue = (1 - perc) * (c1 % 256) + perc * (c2 % 256);
 
+
+	// could put all the math in the ret, but more confusing so...
+
 	return (red * 65536 + green * 256 + blue);
 }
 
+/*
 int		bilin_interpol(t_mag *og, t_mag *new, int cord)
 {
 	int		color;
@@ -76,6 +83,9 @@ int		bilin_interpol(t_mag *og, t_mag *new, int cord)
 	color = lin_interpol(color, tmp, perc.y);
 	return (color);
 }
+*/
+
+	// seems good but need to test
 
 int		bilin_interpol(t_mag *og, int pix_start, double perc_x, double perc_y)
 {
@@ -85,18 +95,16 @@ int		bilin_interpol(t_mag *og, int pix_start, double perc_x, double perc_y)
 	{
 		if ((pix_start + og->x * 2) / og->x > og->y)	// case D
 
-			color = og->img_data[pix_start];
+			return (og->img_data[pix_start]);
 		else			// case B
-			color = lin_interpol(og->img_data[pix_start], og->img_data[pix_start + og->x], perc_y);
+			return (lin_interpol(og->img_data[pix_start], og->img_data[pix_start + og->x], perc_y));
 	}
-	else if (((pix_start + og->x * 2) / og->x > og->y)	// case C
-		color = lin_interpol(og->img_data[pix_start], og->img_data[pix_start + 1], perc_x);
+	else if ((pix_start + og->x * 2) / og->x > og->y)	// case C
+		return (lin_interpol(og->img_data[pix_start], og->img_data[pix_start + 1], perc_x));
 
 	// case A
-	color = lin_interpol(lin_interpol(og->img_data[pix_start], og->img_data[pix_start + 1], perc_x),\
-			lin_interpol(og->img_data[pix_start + og->x], og->img_data[pix_start + og->x + 1], perc_x), perc_y);
-
-	return (color);
+	return (lin_interpol(lin_interpol(og->img_data[pix_start], og->img_data[pix_start + 1], perc_x),\
+			lin_interpol(og->img_data[pix_start + og->x], og->img_data[pix_start + og->x + 1], perc_x), perc_y));
 }
 
 // return an img ???
@@ -105,6 +113,8 @@ void	ft_altdraw(t_img *mlx)		// send new img dimentions ???
 	int		i;
 	t_mag	tmp;
 	t_car	*new;
+	double	x;
+	double	y;
 
 
 			// acting v strange this interpol thing....
@@ -113,20 +123,29 @@ void	ft_altdraw(t_img *mlx)		// send new img dimentions ???
 
 	printf("alt test 1\n");
 
-	tmp.x = mlx->img->x * ((mlx->zoom - 1) / 10);
-	tmp.y = mlx->img->y * ((mlx->zoom - 1) / 10);
+	printf("imgx %d, y %d\n", mlx->img->x, mlx->img->y);
+
+	tmp.x = mlx->img->x * (1 + ((double)mlx->zoom - 1) / 10);
+	tmp.y = mlx->img->y * (1 + ((double)mlx->zoom - 1) / 10);
+	tmp.last = tmp.x * tmp.y;
+
+	printf("wid: %d, hei: %d\n", tmp.x, tmp.y);
+
+
 	printf("alt test 2\n");
+
 	if (!(tmp.img_ptr = mlx_new_image(mlx->ptr, tmp.x, tmp.y)))
 		return ;
 	if (!(tmp.img_data = (int*)mlx_get_data_addr(tmp.img_ptr,\
 		&mlx->bpp, &mlx->s_l, &mlx->endian)))
 		return ;
+	
 	printf("alt test 3\n");
 //	start_car(mlx->img, old);		// should init the tables that convert cartesian to
-	start_car(&tmp, new);			// torchle pos for each img
+//	start_car(&tmp, new);			// torch pos for each img
 	printf("alt test 4\n");
 	i = 0;
-	while (i < tmp.x * tmp.y)
+	while (i < tmp.last)
 	{
 
 		// better, send old img, pos in img, ratios x and y, return color, top left pixel
@@ -134,22 +153,43 @@ void	ft_altdraw(t_img *mlx)		// send new img dimentions ???
 		// x in new_img = i % tmp.x;
 		// y in new_img = i / tmp.x;
 
-		// mlx->img->x / tmp.x * x in new img = new x in old 
-		// mlx->img->y / tmp.y * y in new img = new y in old
-		
-		// floor(new x in old - 0.5) + floor(new y in old - 0.5) * mlx->img->x;	== top left pix in old
 
-		// percentage x = floor(new x in old - 0.5)
+//		x = i % tmp.x;
+//		y = i / tmp.x;
+
+		// mlx->img->x / tmp.x * x = new x in old 
+		// mlx->img->y / tmp.y * y = new y in old
+
+		x = mlx->img->x / tmp.x * (i % tmp.x);		// new x pos in old img
+		y = mlx->img->y / tmp.y * (i / tmp.x);
+
+		// floor(new x in old - 0.5) + floor(new y in old - 0.5) * mlx->img->x;	== top left pix in old
+		// top left = (floor(x - 0.5) + floor(y - 0.5) * mlx->img->x);
+
+
+		// percentage x = floor(new x in old - 0.5)	// wait is it ???
 		// percentage y = floor(new y in old - 0.5)
+		// perc_x = (x - 0.5) - floor(x - 0.5);
+		// perc_y = (y - 0.5) - floor(y - 0.5);
+		
+//		perc_x = floor(mlx->img->x / tmp.x * (i % tmp.x) - 0.5);		
+//		perc_y = floor(mlx->img->y / tmp.y * (i / tmp.x) - 0.5);
+
 
 		//new one:
-		tmp.img_data[i] = bilin_interpol(mlx->img, top_left, perc x, perc y);
+		tmp.img_data[i] = bilin_interpol(mlx->img, floor(x - 0.5) + floor(y - 0.5) * mlx->img->x,\
+							(x - 0.5) - floor(x - 0.5), (y - 0.5) - floor(y - 0.5));
 
-		tmp.img_data[i] = bilin_interpol(mlx->img, &tmp, i);
+//		tmp.img_data[i] = bilin_interpol(mlx->img, &tmp, i);
 		++i;
 	}
+	mlx_destroy_image(mlx->ptr, mlx->img->img_ptr);
+
 	mlx->img = &tmp;
 	printf("alt test 5\n");
-	// somehow clear old img and replace with new one...
+
+	// seems like all that needs to be cleared gets cleard, have to test...
+
+
 }
 

@@ -20,26 +20,26 @@ int		main(int ac, char **av)
 		return (usage_err("Usage: <x> <y> <point width> <point height>\n"));
 	else if (ac == 1)
 	{
-		dim.x = 40;
-		dim.y = 40;
-		dim.wid = 3;
-		dim.hei = 3;
+		dim.x_b = 40;
+		dim.y_b = 40;
+		dim.b_wid = 3;
+		dim.b_hei = 3;
 		ft_img(&dim);
 	}
 	else if (ac == 5)
 	{
-		dim.x = ft_atoi(av[1]);
-		dim.y = ft_atoi(av[2]);
-		dim.wid = ft_atoi(av[3]);
-		dim.hei = ft_atoi(av[4]);
+		dim.x_b = ft_atoi(av[1]);
+		dim.y_b = ft_atoi(av[2]);
+		dim.b_wid = ft_atoi(av[3]);
+		dim.b_hei = ft_atoi(av[4]);
 		ft_img(&dim);
 	}
 	else if (ac == 3)
 	{
-		dim.x = ft_atoi(av[1]);
-		dim.y = ft_atoi(av[2]);
-		dim.wid = 3;
-		dim.hei = 3;
+		dim.x_b = ft_atoi(av[1]);
+		dim.y_b = ft_atoi(av[2]);
+		dim.b_wid = 3;
+		dim.b_hei = 3;
 		ft_img(&dim);
 	}
 	return (0);

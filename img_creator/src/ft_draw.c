@@ -19,10 +19,10 @@ void	ft_draw(t_img *mlx)
 
 		n = rand() % 256 * 65536 + rand() % 256 * 256 + rand() % 256;
 		y = 0;
-		while (y < mlx->dim->hei)
+		while (y < mlx->dim->b_hei)
 		{
 			x = 0;
-			while (x < mlx->dim->wid)
+			while (x < mlx->dim->b_wid)
 			{
 				mlx->img->img_data[mlx->tab[i] + y * mlx->img->x + x] = n;
 //				printf("n: %d\n", n);

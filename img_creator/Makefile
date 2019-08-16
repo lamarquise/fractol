@@ -19,8 +19,13 @@ OBJ_NAME = $(SRC_NAME:.c=.o)
 OBJ = $(addprefix $(OBJ_PATH),$(OBJ_NAME))
 
 INC = -I ~/Documents/42/z_old_projects/libft -I /usr/local/include -I include
+
+INC2 = -I ~/Documents/42/fractol/libft 
+
 HEADER = include/img.h
 LIB_PATH = -L ~/Documents/42/z_old_projects/libft -L /usr/local/lib
+LIB_PATH2 = -L ~/Documents/42/fractol/libft
+
 LIB = -lft -lmlx
 FW = -framework OpenGL -framework AppKit
 
@@ -32,11 +37,11 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 #	make -C libft
-	$(CC) -o $@ $^ $(LIB_PATH) $(LIB) $(FW)
+	$(CC) -o $@ $^ $(LIB_PATH2) $(LIB) $(FW)
 
 $(OBJ_PATH)%.o : $(SRC_PATH)%.c $(HEADER)
 	@mkdir -p $(OBJ_PATH)
-	$(CC)  $(INC) -o $@ -c $<
+	$(CC)  $(INC) $(INC2) -o $@ -c $<
 
 clean:
 #	make clean -C libft
