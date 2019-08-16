@@ -15,12 +15,18 @@ int		ft_redraw(t_img *mlx)	// should work???
 							&mlx->bpp, &mlx->s_l, &mlx->endian);
 		ft_draw(mlx);
 		printf("redraw test 2\n");
+	
+		mlx_clear_window(mlx->ptr, mlx->win_ptr);
+		mlx_put_image_to_window(mlx->ptr, mlx->win_ptr,\
+			mlx->img->img_ptr, 50, 50);
 	}
 	else		// ft_zoom already called so no need to send new img dims
 		ft_altdraw(mlx);
 	printf("redraw test 3\n");
-	mlx_clear_window(mlx->ptr, mlx->win_ptr);
-	mlx_put_image_to_window(mlx->ptr, mlx->win_ptr, mlx->img->img_ptr, 50, 50);
+//	mlx_clear_window(mlx->ptr, mlx->win_ptr);
+//	mlx_put_image_to_window(mlx->ptr, mlx->win_ptr,\
+		mlx->img->img_ptr, 50, 50);
+	printf("redraw test 4\n");
 	return (0);
 }
 

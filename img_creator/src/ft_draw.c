@@ -13,7 +13,7 @@ void	ft_draw(t_img *mlx)
 	int		y;
 
 	i = 0;
-	while (i < mlx->last_p)
+	while (i < mlx->last_b)
 	{
 //		n = 0xFFFFFF - (abs(rand()) % 16777216);// need better rand that isnt neg...
 

@@ -112,7 +112,7 @@ void	ft_altdraw(t_img *mlx)		// send new img dimentions ???
 {
 	int		i;
 	t_mag	tmp;
-	t_car	*new;
+//	t_car	*new;
 	double	x;
 	double	y;
 
@@ -123,29 +123,31 @@ void	ft_altdraw(t_img *mlx)		// send new img dimentions ???
 
 	printf("alt test 1\n");
 
-	printf("imgx %d, y %d\n", mlx->img->x, mlx->img->y);
+//	printf("imgx %d, y %d\n", mlx->img->x, mlx->img->y);
 
+	// now have correct numbers thanks to double cast
 	tmp.x = mlx->img->x * (1 + ((double)mlx->zoom - 1) / 10);
 	tmp.y = mlx->img->y * (1 + ((double)mlx->zoom - 1) / 10);
-	tmp.last = tmp.x * tmp.y;
+	tmp.last_p = tmp.x * tmp.y;
 
-	printf("wid: %d, hei: %d\n", tmp.x, tmp.y);
+//	printf("wid: %d, hei: %d\n", tmp.x, tmp.y);
 
 
 	printf("alt test 2\n");
 
 	if (!(tmp.img_ptr = mlx_new_image(mlx->ptr, tmp.x, tmp.y)))
 		return ;
-	if (!(tmp.img_data = (int*)mlx_get_data_addr(tmp.img_ptr,\
-		&mlx->bpp, &mlx->s_l, &mlx->endian)))
-		return ;
+//	if (!(
+	tmp.img_data = (int*)mlx_get_data_addr(tmp.img_ptr,\
+		&mlx->bpp, &mlx->s_l, &mlx->endian); //))
+//		return ;
 	
 	printf("alt test 3\n");
 //	start_car(mlx->img, old);		// should init the tables that convert cartesian to
 //	start_car(&tmp, new);			// torch pos for each img
 	printf("alt test 4\n");
 	i = 0;
-	while (i < tmp.last)
+	while (i < tmp.last_p)
 	{
 
 		// better, send old img, pos in img, ratios x and y, return color, top left pixel
@@ -177,15 +179,26 @@ void	ft_altdraw(t_img *mlx)		// send new img dimentions ???
 
 
 		//new one:
-		tmp.img_data[i] = bilin_interpol(mlx->img, floor(x - 0.5) + floor(y - 0.5) * mlx->img->x,\
-							(x - 0.5) - floor(x - 0.5), (y - 0.5) - floor(y - 0.5));
+/*
+		tmp.img_data[i] = bilin_interpol(mlx->img, floor(x - 0.5) +\
+							floor(y - 0.5) * mlx->img->x,\
+							(x - 0.5) - floor(x - 0.5), (y - 0.5) -\
+							floor(y - 0.5));
+*/
 
 //		tmp.img_data[i] = bilin_interpol(mlx->img, &tmp, i);
+		tmp.img_data[i] = 0xF11FFF;
+//		printf("color: %d\n", tmp.img_data[i]);
 		++i;
 	}
 	mlx_destroy_image(mlx->ptr, mlx->img->img_ptr);
 
 	mlx->img = &tmp;
+	
+	mlx_clear_window(mlx->ptr, mlx->win_ptr);
+	mlx_put_image_to_window(mlx->ptr, mlx->win_ptr,\
+		mlx->img->img_ptr, 50, 50);
+
 	printf("alt test 5\n");
 
 	// seems like all that needs to be cleared gets cleard, have to test...

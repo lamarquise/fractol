@@ -38,7 +38,7 @@ typedef struct	s_mag
 	int		*img_data;
 	int		x;			// #pixels wide
 	int		y;			// of img
-	int		last;
+	int		last_p;
 //	t_car	*tab;
 	
 }				t_mag;
@@ -48,7 +48,7 @@ typedef struct	s_img
 	void	*ptr;
 	void	*win_ptr;
 	int		win_width;
-	int		last_p;
+	int		last_b;		// don't need it
 	int		*tab;		//still somewhat usefull...
 //	void	*img_ptr;
 //	int		*img_data;
