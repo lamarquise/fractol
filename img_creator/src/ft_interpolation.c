@@ -110,6 +110,7 @@ int		bilin_interpol(t_mag *og, int pix_start, double perc_x, double perc_y)
 // return an img ???
 void	ft_altdraw(t_img *mlx)		// send new img dimentions ???
 {
+	int		tl;
 	int		i;
 	t_mag	tmp;
 //	t_car	*new;
@@ -119,7 +120,7 @@ void	ft_altdraw(t_img *mlx)		// send new img dimentions ???
 
 			// acting v strange this interpol thing....
 
-	printf("inter test: %d\n", lin_interpol(0x000000, 0x000000, 0.5));
+//	printf("inter test: %d\n", lin_interpol(0x000002, 0x000000, 0.5));
 
 	printf("alt test 1\n");
 
@@ -130,8 +131,8 @@ void	ft_altdraw(t_img *mlx)		// send new img dimentions ???
 	tmp.y = mlx->img->y * (1 + ((double)mlx->zoom - 1) / 10);
 	tmp.last_p = tmp.x * tmp.y;
 
-//	printf("wid: %d, hei: %d\n", tmp.x, tmp.y);
-
+//	printf("wid: %d, hei: %d", tmp.x, tmp.y);
+//	printf(" lastp: %d\n", tmp.last_p);
 
 	printf("alt test 2\n");
 
@@ -162,12 +163,15 @@ void	ft_altdraw(t_img *mlx)		// send new img dimentions ???
 		// mlx->img->x / tmp.x * x = new x in old 
 		// mlx->img->y / tmp.y * y = new y in old
 
-		x = mlx->img->x / tmp.x * (i % tmp.x);		// new x pos in old img
-		y = mlx->img->y / tmp.y * (i / tmp.x);
+		x = (double)mlx->img->x / (double)tmp.x * (double)(i % tmp.x);// new x pos in old img
+		y = (double)mlx->img->y / (double)tmp.y * ((double)i / tmp.x);
 
 		// floor(new x in old - 0.5) + floor(new y in old - 0.5) * mlx->img->x;	== top left pix in old
 		// top left = (floor(x - 0.5) + floor(y - 0.5) * mlx->img->x);
 
+		printf("x: %f, y: %f\n", x, y);
+
+//		tl = floor(x - 0.5) + floor(y - 0.5) * mlx->img->x;
 
 		// percentage x = floor(new x in old - 0.5)	// wait is it ???
 		// percentage y = floor(new y in old - 0.5)
@@ -178,16 +182,22 @@ void	ft_altdraw(t_img *mlx)		// send new img dimentions ???
 //		perc_y = floor(mlx->img->y / tmp.y * (i / tmp.x) - 0.5);
 
 
+//		printf("tl: %d\n", tl);
+
 		//new one:
-/*
+
 		tmp.img_data[i] = bilin_interpol(mlx->img, floor(x - 0.5) +\
 							floor(y - 0.5) * mlx->img->x,\
 							(x - 0.5) - floor(x - 0.5), (y - 0.5) -\
 							floor(y - 0.5));
-*/
+
+//		printf("color: %d\n", tmp.img_data[i]);
+
+		
+//		printf("alt test 4.5\n");
 
 //		tmp.img_data[i] = bilin_interpol(mlx->img, &tmp, i);
-		tmp.img_data[i] = 0xF11FFF;
+//		tmp.img_data[i] = 0xF11FFF;
 //		printf("color: %d\n", tmp.img_data[i]);
 		++i;
 	}
@@ -196,7 +206,7 @@ void	ft_altdraw(t_img *mlx)		// send new img dimentions ???
 	mlx->img = &tmp;
 	
 	mlx_clear_window(mlx->ptr, mlx->win_ptr);
-	mlx_put_image_to_window(mlx->ptr, mlx->win_ptr,\
+//	mlx_put_image_to_window(mlx->ptr, mlx->win_ptr,\
 		mlx->img->img_ptr, 50, 50);
 
 	printf("alt test 5\n");
