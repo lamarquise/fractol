@@ -6,7 +6,7 @@ int		ft_redraw(t_img *mlx)	// should work???
 {
 	if (mlx->zoom == 1)
 	{
-		printf("redraw test 1\n");
+//		printf("redraw test 1\n");
 		mlx_destroy_image(mlx->ptr, mlx->img->img_ptr);
 		if (!(mlx->img->img_ptr = mlx_new_image(mlx->ptr,\
 			mlx->img->x, mlx->img->y)))
@@ -14,7 +14,7 @@ int		ft_redraw(t_img *mlx)	// should work???
 		mlx->img->img_data = (int*)mlx_get_data_addr(mlx->img->img_ptr,\
 							&mlx->bpp, &mlx->s_l, &mlx->endian);
 		ft_draw(mlx);
-		printf("redraw test 2\n");
+//		printf("redraw test 2\n");
 	
 		mlx_clear_window(mlx->ptr, mlx->win_ptr);
 //		mlx_put_image_to_window(mlx->ptr, mlx->win_ptr,\
@@ -22,11 +22,11 @@ int		ft_redraw(t_img *mlx)	// should work???
 	}
 	else		// ft_zoom already called so no need to send new img dims
 		ft_altdraw(mlx);
-	printf("redraw test 3\n");
+//	printf("redraw test 3\n");
 //	mlx_clear_window(mlx->ptr, mlx->win_ptr);
 	mlx_put_image_to_window(mlx->ptr, mlx->win_ptr,\
 		mlx->img->img_ptr, 50, 50);
-	printf("redraw test 4\n");
+//	printf("redraw test 4\n");
 	return (0);
 }
 

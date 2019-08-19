@@ -114,6 +114,8 @@ void	ft_altdraw(t_img *mlx)		// send new img dimentions ???
 	int		i;
 	t_mag	tmp;
 //	t_car	*new;
+	int		f_x;
+	int		f_y;
 	double	x;
 	double	y;
 
@@ -122,7 +124,7 @@ void	ft_altdraw(t_img *mlx)		// send new img dimentions ???
 
 //	printf("inter test: %d\n", lin_interpol(0x000002, 0x000000, 0.5));
 
-	printf("alt test 1\n");
+//	printf("alt test 1\n");
 
 //	printf("imgx %d, y %d\n", mlx->img->x, mlx->img->y);
 
@@ -131,10 +133,17 @@ void	ft_altdraw(t_img *mlx)		// send new img dimentions ???
 	tmp.y = mlx->img->y * (1 + ((double)mlx->zoom - 1) / 10);
 	tmp.last_p = tmp.x * tmp.y;
 
-//	printf("wid: %d, hei: %d", tmp.x, tmp.y);
-//	printf(" lastp: %d\n", tmp.last_p);
+	printf("wid: %d, hei: %d", tmp.x, tmp.y);
+	printf(" lastp: %d\n", tmp.last_p);
 
-	printf("alt test 2\n");
+
+//	unsigned int	a = 0;
+
+//	printf("unsigned int test: %d\n", a - 1);
+
+
+
+//	printf("alt test 2\n");
 
 	if (!(tmp.img_ptr = mlx_new_image(mlx->ptr, tmp.x, tmp.y)))
 		return ;
@@ -143,10 +152,10 @@ void	ft_altdraw(t_img *mlx)		// send new img dimentions ???
 		&mlx->bpp, &mlx->s_l, &mlx->endian); //))
 //		return ;
 	
-	printf("alt test 3\n");
+//	printf("alt test 3\n");
 //	start_car(mlx->img, old);		// should init the tables that convert cartesian to
 //	start_car(&tmp, new);			// torch pos for each img
-	printf("alt test 4\n");
+//	printf("alt test 4\n");
 	i = 0;
 	while (i < tmp.last_p)
 	{
@@ -156,6 +165,8 @@ void	ft_altdraw(t_img *mlx)		// send new img dimentions ???
 		// x in new_img = i % tmp.x;
 		// y in new_img = i / tmp.x;
 
+//		printf("x in new img: %d\n", i % tmp.x);
+
 
 //		x = i % tmp.x;
 //		y = i / tmp.x;
@@ -163,15 +174,35 @@ void	ft_altdraw(t_img *mlx)		// send new img dimentions ???
 		// mlx->img->x / tmp.x * x = new x in old 
 		// mlx->img->y / tmp.y * y = new y in old
 
+
 		x = (double)mlx->img->x / (double)tmp.x * (double)(i % tmp.x);// new x pos in old img
 		y = (double)mlx->img->y / (double)tmp.y * ((double)i / tmp.x);
+
+//		printf("new x in old img: %f\n", x);
+
+
 
 		// floor(new x in old - 0.5) + floor(new y in old - 0.5) * mlx->img->x;	== top left pix in old
 		// top left = (floor(x - 0.5) + floor(y - 0.5) * mlx->img->x);
 
-		printf("x: %f, y: %f\n", x, y);
+//		printf("x: %f, y: %f\n", x, y);
 
-//		tl = floor(x - 0.5) + floor(y - 0.5) * mlx->img->x;
+		f_x = floor(x - 0.5);
+		f_y = floor(y - 0.5);
+
+		if (f_x < 0)
+			f_x = 0;
+		if (f_y < 0)
+			f_y = 0;
+
+		tl = f_x + f_y * mlx->img->x;
+
+//		if (tl < 0)
+//			tl = 0;
+
+//		printf("floorx: %d, floory: %d, old img x: %d\n", (int)floor(x - 0.5), (int)floor(y - 0.5), mlx->img->x);
+
+		printf("top left pix: %d\n", tl);
 
 		// percentage x = floor(new x in old - 0.5)	// wait is it ???
 		// percentage y = floor(new y in old - 0.5)
@@ -186,10 +217,9 @@ void	ft_altdraw(t_img *mlx)		// send new img dimentions ???
 
 		//new one:
 
-		tmp.img_data[i] = bilin_interpol(mlx->img, floor(x - 0.5) +\
-							floor(y - 0.5) * mlx->img->x,\
-							(x - 0.5) - floor(x - 0.5), (y - 0.5) -\
-							floor(y - 0.5));
+		tmp.img_data[i] = bilin_interpol(mlx->img, tl,\
+							(x - 0.5) - f_x, (y - 0.5) -\
+							f_y);
 
 //		printf("color: %d\n", tmp.img_data[i]);
 
@@ -209,7 +239,7 @@ void	ft_altdraw(t_img *mlx)		// send new img dimentions ???
 //	mlx_put_image_to_window(mlx->ptr, mlx->win_ptr,\
 		mlx->img->img_ptr, 50, 50);
 
-	printf("alt test 5\n");
+//	printf("alt test 5\n");
 
 	// seems like all that needs to be cleared gets cleard, have to test...
 
