@@ -1,31 +1,7 @@
 
 
-	// would need to change the include to use with something else...
 
-#include "img.h"
-
-	// fairly certain this shit is useless or redundant or both
-/*
-void	start_car(t_mag *img, t_car *cord)
-{
-	int		i;
-	int		n;
-
-	i = 0;
-	n = img->x * img->y;
-	if (!(cord = ft_memalloc(sizeof(t_car) * n)))
-		return ;
-	while (i < n)
-	{
-		cord[i].x = i % img->x;		// cartesian coords, the unit is Pixels?
-		cord[i].y = i / img->x;
-		++i;
-	}
-	img->tab = cord;
-}
-*/
-
-	// seems good but need to test
+#include "fractol.h"
 
 int		lin_interpol(int c1, int c2, double perc)	// standard perc, always left...
 {
@@ -54,39 +30,6 @@ int		lin_interpol(int c1, int c2, double perc)	// standard perc, always left...
 	return (red * 65536 + green * 256 + blue);
 }
 
-/*
-int		bilin_interpol(t_mag *og, t_mag *new, int cord)
-{
-	int		color;
-	int		tmp;
-	t_car	point;
-	t_car	perc;
-	int		bot;
-
-	// get coord of new point in og:
-
-	point.x = new->tab[cord].x / new->x * og->x;
-	point.y = new->tab[cord].y / new->y * og->y;
-
-	bot = (int)floor(point.x - 0.5);	// x cord of pix in og system
-
-	// from coord get percentage between points
-	perc.x = point.x - 0.5 - bot;					//use same perc for 2 pix under?
-	perc.y = point.y - 0.5 - floor(point.y - 0.5);
-
-	// interpolate * 3
-	// no idea if these ternaires work...
-	color = lin_interpol(og->img_data[bot],\
-			og->img_data[(bot % og->x == 0) ? bot : bot + 1], perc.x);
-	tmp = lin_interpol(og->img_data[(bot + og->x > og->x * og->y) ? bot : bot + og->x],\
-			og->img_data[(bot + 1 + og->x > og->x * og->y) ? bot : bot + 1 + og->x], perc.x);
-	color = lin_interpol(color, tmp, perc.y);
-	return (color);
-}
-*/
-
-	// seems good but need to test
-
 int		bilin_interpol(t_mag *og, int pix_start, double perc_x, double perc_y)
 {
 	int		color;
@@ -107,57 +50,65 @@ int		bilin_interpol(t_mag *og, int pix_start, double perc_x, double perc_y)
 			lin_interpol(og->img_data[pix_start + og->x], og->img_data[pix_start + og->x + 1], perc_x), perc_y));
 }
 
-// return an img ???
-void	ft_altdraw(t_img *mlx)		// send new img dimentions ???
+void	ft_resize(t_ol * tab, int old_tx, int old_ty)
 {
 	int		tl;
 	int		i;
-	t_mag	tmp;
-//	t_car	*new;
+//	t_mag	tmp;
+	void	*tmp_img_ptr;
+	int		*tmp_img_data;
 	int		f_x;
 	int		f_y;
 	double	x;
 	double	y;
 
 
-			// acting v strange this interpol thing....
+			// good idea to do this here but only works if it's zoom out...
+/*	tab->scale /= tab->z_fact;
 
-//	printf("inter test: %d\n", lin_interpol(0x000002, 0x000000, 0.5));
+	tab->wid_scale /= tab->z_fact;
+	tab->hei_scale /= tab->z_fact;
 
-//	printf("alt test 1\n");
-
-//	printf("imgx %d, y %d\n", mlx->img->x, mlx->img->y);
-
-	// now have correct numbers thanks to double cast
-	tmp.x = mlx->img->x * (1 + ((double)mlx->zoom - 1) / 10);
-	tmp.y = mlx->img->y * (1 + ((double)mlx->zoom - 1) / 10);
-	tmp.last_p = tmp.x * tmp.y;
-
-	printf("wid: %d, hei: %d", tmp.x, tmp.y);
-	printf(" lastp: %d\n", tmp.last_p);
+	tab->st_x = tab->x_o - tab->wid_scale / 2;
+	tab->st_y = tab->y_o + tab->hei_scale / 2;
+*/
 
 
-//	unsigned int	a = 0;
-
-//	printf("unsigned int test: %d\n", a - 1);
+	
 
 
 
-//	printf("alt test 2\n");
 
-	if (!(tmp.img_ptr = mlx_new_image(mlx->ptr, tmp.x, tmp.y)))
+
+
+
+
+
+
+
+
+
+
+
+
+//	tmp.x = tab->win_width * 1.5;
+//	tmp.y = tab->win_height * 1.5;
+//	tmp.last_p = tmp.x * tmp.y;
+
+//	printf("wid: %d, hei: %d", tmp.x, tmp.y);
+//	printf(" lastp: %d\n", tmp.last_p);
+
+
+
+	if (!(tmp_img_ptr = mlx_new_image(mlx->ptr, tab->win_width, tab->win_height)))
 		return ;
 //	if (!(
-	tmp.img_data = (int*)mlx_get_data_addr(tmp.img_ptr,\
-		&mlx->bpp, &mlx->s_l, &mlx->endian); //))
+	tmp_img_data = (int*)mlx_get_data_addr(tmp_img_ptr,\
+		tab->mlx->bpp, tab->mlx->s_l, tab->mlx->endian); //))
 //		return ;
 	
-//	printf("alt test 3\n");
-//	start_car(mlx->img, old);		// should init the tables that convert cartesian to
-//	start_car(&tmp, new);			// torch pos for each img
-//	printf("alt test 4\n");
 	i = 0;
-	while (i < tmp.last_p)
+	while (i < tab->last_pix)
 	{
 
 		// better, send old img, pos in img, ratios x and y, return color, top left pixel
@@ -175,8 +126,8 @@ void	ft_altdraw(t_img *mlx)		// send new img dimentions ???
 		// mlx->img->y / tmp.y * y = new y in old
 
 
-		x = (double)mlx->img->x / (double)tmp.x * (double)(i % tmp.x);// new x pos in old img
-		y = (double)mlx->img->y / (double)tmp.y * ((double)i / tmp.x);
+		x = (1 / 1.5) * (double)(i % tmp.x); // new x pos in old img
+		y = (1 / 1.5) * ((double)i / tmp.x);
 
 //		printf("new x in old img: %f\n", x);
 
@@ -217,7 +168,7 @@ void	ft_altdraw(t_img *mlx)		// send new img dimentions ???
 
 		//new one:
 
-		tmp.img_data[i] = bilin_interpol(mlx->img, tl,\
+		tmp.img_data[i] = bilin_interpol(tab->img, tl,\
 							(x - 0.5) - f_x, (y - 0.5) -\
 							f_y);
 

@@ -53,33 +53,36 @@ int		ft_zoom_out(int x, int y, t_ol *tab)
 
 int		ft_zoom_in(int x, int y, t_ol *tab)
 {
-	int		i;
-
-	i = 1;
-		++tab->zoom;
-
-	while (i < tab->z_iter)
-	{
-		
-		tab->x_o = ((tab->z_fact - 1) * (tab->st_x + x *\
-					tab->scale) + tab->x_o) / tab->z_fact;
-		tab->y_o = ((tab->z_fact - 1) * (tab->st_y - y *\
-					tab->scale) + tab->y_o) / tab->z_fact;
-
-		tab->scale /= tab->z_fact;
-
-		tab->wid_scale /= tab->z_fact;	// adjust to new win wid scale
-		tab->hei_scale /= tab->z_fact;
-
-//		printf("in origin: x = %f, y = %f\n", tab->x_o, tab->y_o);
-			//divide again because need 1/4 only works if fact is 2 ???
-		tab->st_x = tab->x_o - tab->wid_scale / 2;
-		tab->st_y = tab->y_o + tab->hei_scale / 2;		// this sets new top left coord
 	
-//		printf("in new st: x %f, y %f\n", tab->st_x, tab->st_y);
-		ft_redraw(tab->mlx, tab->number);
-		++i;
-	}
+	tab->old_st_x = tab->st_x;
+	tab->old_st_y = tab->st_y;
+	tab->old_win_wid = tab->win_wid;
+	tab->old_win_hei = tab->win_hei;
+
+	++tab->zoom;
+
+	tab->x_o = ((tab->z_fact - 1) * (tab->st_x + x *\
+				tab->scale) + tab->x_o) / tab->z_fact;
+	tab->y_o = ((tab->z_fact - 1) * (tab->st_y - y *\
+				tab->scale) + tab->y_o) / tab->z_fact;
+
+	tab->scale /= tab->z_fact;
+
+	tab->wid_scale /= tab->z_fact;	// adjust to new win wid scale
+	tab->hei_scale /= tab->z_fact;
+
+	tab->st_x = tab->x_o - tab->wid_scale / 2;
+	tab->st_y = tab->y_o + tab->hei_scale / 2;		// this sets new top left coord
+
+/*	tab->tmp_st_x -= tab->st_x;
+	tab->tmp_st_y + tab->st_y;
+	tab->tmp_win_wid -= tab->win_wid;
+	tab->tmp_win_hei += tab->win_hei;
+*/
+	ft_resize(tab);		// re-printing of img in window needs to be fully managed in this function... need to keep og img for zoom ??? i don't think so...
+
+//	printf("in new st: x %f, y %f\n", tab->st_x, tab->st_y);
+//	ft_redraw(tab->mlx, tab->number);
 	return (ft_redraw(tab->mlx, tab->number));
 }
 

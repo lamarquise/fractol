@@ -6,7 +6,7 @@
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/30 16:31:12 by erlazo            #+#    #+#             */
-/*   Updated: 2019/08/15 17:56:00 by erlazo           ###   ########.fr       */
+/*   Updated: 2019/08/19 20:38:05 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,24 @@
 # include <math.h>
 # include <unistd.h>
 # include <stdlib.h>
+
+
+
+// img stuff for interpolation
+
+typedef struct	s_mag
+{
+	void	*img_ptr;
+	int		*img_data;
+	int		x;			// # of pixels wid of img
+	int		y;
+	int		last_p;
+}				t_mag;
+
+
+
+
+// regular fractal stuff
 
 typedef struct	s_compn
 {
@@ -50,6 +68,7 @@ typedef	struct	s_ol
 	int				last_pix;
 	int				win_origin;
 	double			z_fact;		//zoom factor
+	int				z_iter;		// # of times interpolate between final imgs when zoom (-1), basically its a factor for between regular zooms
 //	double			og_st_x;//og left cord
 //	double			og_st_y;
 	double			st_x; // current left cord
@@ -62,6 +81,12 @@ typedef	struct	s_ol
 	int				zoom;
 	int				max_iter;
 	int				disp_info;
+
+	// stuff for interpol
+	double			og_st_x;
+	double			og_st_y;
+	double			old_wid_scale;
+	double			old_hei_scale;
 
 	// mouse stuff:
 	int				m_pressed;	// is or not

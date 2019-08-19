@@ -6,7 +6,7 @@
 #    By: tlamart <tlamart@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/24 15:44:24 by tlamart           #+#    #+#              #
-#    Updated: 2019/07/02 16:54:42 by erlazo           ###   ########.fr        #
+#    Updated: 2019/08/19 19:12:49 by erlazo           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,10 +17,11 @@ SRC_NAME =	draw.c			\
 			keyhook.c		\
 			fractal.c		\
 			initfractal.c	\
-			zoom.c			\
+			test_zoom.c		\
 			tools.c			\
 			move.c			\
 			mouse.c			\
+			interpolation.c	\
 			main.c
 
 SRC = $(addprefix $(SRC_PATH),$(SRC_NAME))

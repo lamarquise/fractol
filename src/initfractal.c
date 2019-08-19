@@ -36,6 +36,7 @@ int		ft_createwin(t_fract *mlx, t_ol *tab, int i) // don't really need i...
 //	tab->scale = tab->start_x * 2 / tab->win_width;		// don't work ???
 	tab->zoom = 1;
 	tab->z_fact = 2;
+	tab->z_iter	= 2;
 	tab->disp_info = 0;
 
 	// mouse stuff
