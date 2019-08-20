@@ -6,7 +6,7 @@
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/30 16:31:12 by erlazo            #+#    #+#             */
-/*   Updated: 2019/08/19 20:38:05 by erlazo           ###   ########.fr       */
+/*   Updated: 2019/08/20 21:49:22 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,10 +83,11 @@ typedef	struct	s_ol
 	int				disp_info;
 
 	// stuff for interpol
-	double			og_st_x;
-	double			og_st_y;
+	double			old_st_x;
+	double			old_st_y;
 	double			old_wid_scale;
 	double			old_hei_scale;
+	double			old_scale;
 
 	// mouse stuff:
 	int				m_pressed;	// is or not
@@ -136,5 +137,9 @@ int		ft_pan_down(t_ol *tab);
 int		ft_mouse_press(int n, int x, int y, t_ol *tab);
 int		ft_mouse_release(int n, int x, int y, t_ol *tab);
 int		ft_mouse_move(int x, int y, t_ol *tab);
+
+// interpolation
+void	ft_resize(t_ol *tab);
+int		ft_simple_zoom(t_ol *tab);	// tmp ???
 
 #endif

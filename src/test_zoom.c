@@ -6,6 +6,29 @@
 
 	// new zoom is a facor of 2 every time...
 
+int		ft_simple_zoom(t_ol *tab)
+{
+
+	tab->old_st_x = tab->st_x;
+	tab->old_st_y = tab->st_y;
+	tab->old_wid_scale = tab->wid_scale;
+	tab->old_hei_scale = tab->hei_scale;
+	tab->old_scale = tab->scale;
+	
+	tab->x_o = 0;
+	tab->y_o = 0;
+
+	tab->scale /= tab->z_fact;
+
+	tab->wid_scale /= tab->z_fact;	// adjust to new win wid scale
+	tab->hei_scale /= tab->z_fact;
+
+	tab->st_x = tab->x_o - tab->wid_scale / 2;
+	tab->st_y = tab->y_o + tab->hei_scale / 2;		// this sets new top left coord
+	
+	ft_resize(tab);
+	return (0);
+}
 
 int		ft_resetfract(t_ol *tab)	// could call this in init to save space
 {									// wait no cuz return...
@@ -53,11 +76,15 @@ int		ft_zoom_out(int x, int y, t_ol *tab)
 
 int		ft_zoom_in(int x, int y, t_ol *tab)
 {
-	
+
+	printf("test 1\n");
+
+
 	tab->old_st_x = tab->st_x;
 	tab->old_st_y = tab->st_y;
-	tab->old_win_wid = tab->win_wid;
-	tab->old_win_hei = tab->win_hei;
+	tab->old_wid_scale = tab->wid_scale;
+	tab->old_hei_scale = tab->hei_scale;
+	tab->old_scale = tab->scale;
 
 	++tab->zoom;
 
@@ -83,7 +110,10 @@ int		ft_zoom_in(int x, int y, t_ol *tab)
 
 //	printf("in new st: x %f, y %f\n", tab->st_x, tab->st_y);
 //	ft_redraw(tab->mlx, tab->number);
-	return (ft_redraw(tab->mlx, tab->number));
+//	return (ft_redraw(tab->mlx, tab->number));
+
+	return (0);
+
 }
 
 

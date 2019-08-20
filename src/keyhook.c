@@ -6,7 +6,7 @@
 /*   By: tlamart <erlazo@student.42.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/05 17:58:28 by erlazo            #+#    #+#             */
-/*   Updated: 2019/08/19 18:59:40 by erlazo           ###   ########.fr       */
+/*   Updated: 2019/08/20 19:40:19 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,11 @@ void	ft_init_keytorch(t_key *torch)
 	torch[7].f = ft_pan_up;
 	torch[8].keycode = 125;
 	torch[8].f = ft_pan_down;
+
+
+	torch[9].keycode = 49;
+	torch[9].f = ft_simple_zoom;
+
 
 /*	torch[1].keycode = 116;
 	torch[1].f = &ft_increase_altitude;
