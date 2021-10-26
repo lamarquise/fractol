@@ -52,32 +52,6 @@ int		bilin_interpol(t_mag *og, int pix_start, double perc_x, double perc_y)
 
 void	ft_resize(t_ol *tab)
 {
-
-/*	
-	int		tl;
-	int		i;
-//	t_mag	tmp;
-	void	*tmp_img_ptr;
-	int		*tmp_img_data;
-	int		f_x;
-	int		f_y;
-	double	x;
-	double	y;
-
-*/
-			// good idea to do this here but only works if it's zoom out...
-/*	tab->scale /= tab->z_fact;
-
-	tab->wid_scale /= tab->z_fact;
-	tab->hei_scale /= tab->z_fact;
-
-	tab->st_x = tab->x_o - tab->wid_scale / 2;
-	tab->st_y = tab->y_o + tab->hei_scale / 2;
-*/
-
-	// so far this is only for zooming in...
-
-
 	t_mag	tmp;
 
 	int		img_st_x;		// x pos of top left of img in wind, unit is  pixels, (0,0) is top left
@@ -91,7 +65,6 @@ void	ft_resize(t_ol *tab)
 	int		tl;		// in pixels, relative to tl of window, mot 2D coordinate pixels, just the int *tab pixels
 
 
-
 	if (!(tmp.img_ptr = mlx_new_image(tab->mlx->ptr, tab->win_width, tab->win_height)))
 		return ;
 //	if (!(
@@ -102,54 +75,70 @@ void	ft_resize(t_ol *tab)
 	printf("inter 1\n");
 
 	iter = 1;
-	n_of_interpolations = 2;		// actually its number of interpolations + 1
+	n_of_interpolations = 2; // actually its number of interpolations + 1
 	while (iter < n_of_interpolations)
 	{
 
 		printf("st_y: %f\n", tab->st_y);
 
-		printf("inter 2\n");
-		tmp_scale = ((tab->old_scale - tab->scale) / n_of_interpolations) * iter + tab->scale;	// or - old_scale, how to make this zoom in AND out ???
+		tmp_scale = ((tab->old_scale - tab->scale) /\
+					n_of_interpolations) * iter + tab->scale;
+		// or - old_scale, how to make this zoom in AND out ???
 
-													//number of imgs between zooms
-		tmp.x = (double)(tab->old_wid_scale - ((tab->old_wid_scale - tab->wid_scale) / n_of_interpolations) * iter) * tab->old_scale;	// should be iteration compatible
-		tmp.y = (tab->old_hei_scale - ((tab->old_hei_scale - tab->hei_scale) / n_of_interpolations) * iter) * tab->old_scale;
+		tmp.x = (tab->old_wid_scale - tab->wid_scale) /\
+				n_of_interpolations * iter / tab->old_scale;
 
+		tmp.y = ((tab->old_hei_scale - tab->hei_scale) /\
+				n_of_interpolations) * iter / tab->old_scale;
 
-		printf("x: %d, y: %d\n", tmp.x, tmp.y);
-
+		printf("tmpx: %d, tmpy: %d\n", tmp.x, tmp.y);
 
 		tmp.last_p = tmp.x * tmp.y;
 
-		img_st_x = ((tab->old_st_x - tab->st_x) / n_of_interpolations) * iter * tab->old_scale;		// also iteration compatible
-		img_st_y = ((tab->old_st_y - tab->st_y) / n_of_interpolations) * iter * tab->old_scale;
-
+		img_st_x = ((tab->old_st_x - tab->st_x) / n_of_interpolations) *\
+					iter / tab->old_scale;	// also iteration compatible
+		img_st_y = ((tab->old_st_y - tab->st_y) / n_of_interpolations) *\
+					iter / tab->old_scale;
 
 		printf("last p: %d\n", tmp.last_p);
-		printf("inter 3\n");
-
-// the while goes here...
 
 		i = 0;
 		while (i < tab->last_pix)
 		{
-			printf("inter 4\n");
-			relative_x = (tmp.x / tab->win_width) * (double)(i % tab->win_width);
-			relative_y = (tmp.y / tab->win_height) * ((double)i / tab->win_height);
-			tl = img_st_x + tab->win_width * img_st_y + (floor(relative_x - 0.5) + floor(relative_y - 0.5) * tab->win_width);
-			tmp.img_data[i] = bilin_interpol(&tmp, tl,(relative_x - 0.5) - (floor(relative_x - 0.5)), (relative_y - 0.5) - (floor(relative_y - 0.5)));
+//			printf("inter 4\n");
+
+			relative_x = (tmp.x / tab->win_width) *\
+						(double)(i % tab->win_width);
+
+			relative_y = (tmp.y / tab->win_height) *\
+						((double)i / tab->win_height);
+
+			tl = img_st_x + tab->win_width * img_st_y +\
+				(floor(relative_x - 0.5) + floor(relative_y - 0.5) *\
+				tab->win_width);
+
+			tmp.img_data[i] = bilin_interpol(&tmp, tl,(relative_x - 0.5) -\
+							(floor(relative_x - 0.5)), (relative_y - 0.5) -\
+							(floor(relative_y - 0.5)));
 			
-			printf("color: %d\n", tmp.img_data[i]);
+//			printf("color: %d\n", tmp.img_data[i]);
 			
 			++i;
 		}
 		mlx_clear_window(tab->mlx->ptr, tab->win_ptr);
-		mlx_put_image_to_window(tab->mlx->ptr, tab->win_ptr, tmp.img_ptr, 0, 0);
+		mlx_put_image_to_window(tab->mlx->ptr, tab->win_ptr,\
+								tmp.img_ptr, 0, 0);
 	
 		++iter;
 	}
 
 	printf("inter 5\n");
+
+}
+
+
+
+
 
 /*
 
@@ -259,6 +248,8 @@ void	ft_resize(t_ol *tab)
 
 	// seems like all that needs to be cleared gets cleard, have to test...
 
-*/
+
 }
+
+*/
 

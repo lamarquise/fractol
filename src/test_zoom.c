@@ -106,11 +106,11 @@ int		ft_zoom_in(int x, int y, t_ol *tab)
 	tab->tmp_win_wid -= tab->win_wid;
 	tab->tmp_win_hei += tab->win_hei;
 */
-	ft_resize(tab);		// re-printing of img in window needs to be fully managed in this function... need to keep og img for zoom ??? i don't think so...
+//	ft_resize(tab);		// re-printing of img in window needs to be fully managed in this function... need to keep og img for zoom ??? i don't think so...
 
 //	printf("in new st: x %f, y %f\n", tab->st_x, tab->st_y);
 //	ft_redraw(tab->mlx, tab->number);
-//	return (ft_redraw(tab->mlx, tab->number));
+	return (ft_redraw(tab->mlx, tab->number));
 
 	return (0);
 
